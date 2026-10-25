@@ -1,4 +1,4 @@
-﻿package com.example.demojpa.entity;
+package com.example.demojpa.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

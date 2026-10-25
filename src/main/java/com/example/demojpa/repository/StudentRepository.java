@@ -1,4 +1,4 @@
-﻿package com.example.demojpa.repository;
+package com.example.demojpa.repository;
 
 import com.example.demojpa.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;

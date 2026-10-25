@@ -1,4 +1,4 @@
-﻿package com.example.demojpa;
+package com.example.demojpa;
 
 import com.example.demojpa.entity.Student;
 import com.example.demojpa.repository.StudentRepository;

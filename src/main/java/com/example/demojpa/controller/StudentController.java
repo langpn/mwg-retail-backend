@@ -1,4 +1,4 @@
-﻿package com.example.demojpa.controller;
+package com.example.demojpa.controller;
 
 import java.util.List;
 
