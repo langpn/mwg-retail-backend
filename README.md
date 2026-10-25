@@ -59,7 +59,37 @@ Dự án được xây dựng nhằm mô phỏng hệ thống quản lý dữ li
 
 ---
 
-## 📊 III. SƠ ĐỒ CƠ SỞ DỮ LIỆU (10 BẢNG QUAN HỆ CHUẨN)
+## 📁 III. CẤU TRÚC THƯ MỤC MONOREPO
+
+```text
+mwg-retail-system/
+├── backend/                  <── Toàn bộ Spring Boot 3 + MySQL 10 bảng (Maven)
+│   ├── src/main/java/com/example/demojpa/
+│   │   ├── entity/           <── 10 JPA Entities
+│   │   ├── repository/       <── 10 JpaRepository interfaces
+│   │   ├── service/          <── 3 Services nghiệp vụ
+│   │   ├── controller/       <── REST APIs & Web Controller
+│   │   ├── dto/              <── Request/Response DTOs
+│   │   └── seeder/           <── DataSeeder nạp sẵn dữ liệu mẫu
+│   ├── src/main/resources/
+│   │   ├── static/           <── Nơi chứa bundle tĩnh của React sau khi build
+│   │   └── application.properties
+│   ├── pom.xml
+│   ├── mvnw
+│   └── mvnw.cmd
+├── frontend/                 <── Dự án React 18 + Vite + Tailwind CSS (SPA)
+│   ├── src/                  <── Dashboard bán lẻ, tra cứu tồn kho, form đặt hàng
+│   ├── package.json
+│   └── vite.config.ts        <── Tự động build thẳng vào backend static
+├── docs/                     <── Cuốn báo cáo 17 trang, sơ đồ ERD 10 bảng
+├── HUONG_DAN_DO_AN_CHO_NHOM.md
+├── KE_HOACH_CHI_TIET_NHOM_3_NGUOI.md
+└── README.md
+```
+
+---
+
+## 📊 IV. SƠ ĐỒ CƠ SỞ DỮ LIỆU (10 BẢNG QUAN HỆ CHUẨN)
 
 Hệ thống được thiết kế chuẩn mực 10 thực thể quan hệ bằng **Spring Data JPA**:
 
@@ -88,11 +118,11 @@ Hệ thống được thiết kế chuẩn mực 10 thực thể quan hệ bằn
 
 ---
 
-## 🚀 IV. HƯỚNG DẪN KHỞI CHẠY ỨNG DỤNG (CHỈ 1 LỆNH DUY NHẤT)
+## 🚀 V. HƯỚNG DẪN KHỞI CHẠY ỨNG DỤNG (CHỈ 1 LỆNH DUY NHẤT)
 
 ### 1. Chuẩn Bị CSDL MySQL:
 * Mở MySQL Workbench hoặc XAMPP, tạo database rỗng tên: `mwg_retail_db`.
-* Cấu hình trong `src/main/resources/application.properties`:
+* Cấu hình trong `backend/src/main/resources/application.properties`:
   ```properties
   spring.datasource.url=jdbc:mysql://localhost:3306/mwg_retail_db?useSSL=false&serverTimezone=UTC
   spring.datasource.username=root
@@ -104,10 +134,10 @@ Hệ thống được thiết kế chuẩn mực 10 thực thể quan hệ bằn
 ### 2. Chạy Ứng Dụng:
 ```bash
 # Trên macOS / Linux:
-./mvnw spring-boot:run
+cd backend && ./mvnw spring-boot:run
 
 # Trên Windows Command Prompt:
-mvnw.cmd spring-boot:run
+cd backend && mvnw.cmd spring-boot:run
 ```
 
 ### 3. Trải Nghiệm Giao Diện:
@@ -116,7 +146,7 @@ mvnw.cmd spring-boot:run
 
 ---
 
-## 👥 V. THÀNH VIÊN THỰC HIỆN ĐỒ ÁN (NHÓM 3 SINH VIÊN IUH)
+## 👥 VI. THÀNH VIÊN THỰC HIỆN ĐỒ ÁN (NHÓM 3 SINH VIÊN IUH)
 
 * **Phạm Ngọc Lang** (MSSV: 25765251) - Nhóm trưởng (Phụ trách Phân hệ Sản phẩm, Hạ tầng Spring Boot & REST APIs).
 * **Bạn Diễm** (Phụ trách Phân hệ Siêu thị & Tồn kho chi nhánh).

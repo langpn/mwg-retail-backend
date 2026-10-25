@@ -101,17 +101,17 @@ Thầy quy định báo cáo **khoảng 17 trang trở lại**, nhóm sẽ bố 
 ## 💻 V. HƯỚNG DẪN KÉO CODE VỀ MÁY & CHẠY LOCALHOST (DIỄM & TOÀN)
 
 ### Bước 1: Vào link GitHub bấm chấp nhận lời mời:
-👉 `https://github.com/langpn/mwg-retail-backend/invitations` bấm **Accept invitation**.
+👉 `https://github.com/langpn/mwg-retail-system/invitations` bấm **Accept invitation**.
 
 ### Bước 2: Mở Terminal (hoặc Git Bash) gõ lệnh:
 ```bash
-git clone https://github.com/langpn/mwg-retail-backend.git
-cd mwg-retail-backend
+git clone https://github.com/langpn/mwg-retail-system.git
+cd mwg-retail-system
 ```
 
 ### Bước 3: Tạo CSDL trên máy các bạn:
 * Mở XAMPP hoặc MySQL Workbench, tạo 1 database tên là: `mwg_retail_db`.
-* Mở file `src/main/resources/application.properties` kiểm tra cấu hình:
+* Mở file `backend/src/main/resources/application.properties` kiểm tra cấu hình:
   ```properties
   spring.datasource.url=jdbc:mysql://localhost:3306/mwg_retail_db?useSSL=false&serverTimezone=UTC
   spring.datasource.username=root
@@ -121,9 +121,9 @@ cd mwg-retail-backend
   ```
 
 ### Bước 4: Chạy thử ứng dụng:
-* Trên máy macOS/Linux: `./mvnw spring-boot:run`
-* Trên máy Windows: `mvnw.cmd spring-boot:run`
-* Mở trình duyệt gõ: `http://localhost:8080`
+* Trên máy macOS/Linux: `cd backend && ./mvnw spring-boot:run`
+* Trên máy Windows: `cd backend && mvnw.cmd spring-boot:run`
+* Mở trình duyệt gõ: `http://localhost:8080` (Giao diện React hiện đại sẽ tự động hiển thị mượt mà!).
 
 ---
 
