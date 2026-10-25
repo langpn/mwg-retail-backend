@@ -9,7 +9,9 @@ import java.util.List;
  * Entity: Product (Sản phẩm điện máy)
  * Quan hệ: 
  * - Thuộc về 1 Category (N - 1)
+ * - Thuộc về 1 Brand (N - 1)
  * - Có tồn kho tại nhiều StoreBranch qua Inventory (1 - N)
+ * - Có nhiều đánh giá ProductReview (1 - N)
  */
 @Entity
 @Table(name = "products")
@@ -31,28 +33,32 @@ public class Product {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    /**
-     * @ManyToOne: Nhiều sản phẩm thuộc về 1 danh mục.
-     * @JoinColumn: Tạo cột khóa ngoại 'category_id' trong bảng 'products'.
-     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Inventory> inventories = new ArrayList<>();
 
-    // Constructor mặc định cho JPA
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ProductReview> reviews = new ArrayList<>();
+
     public Product() {
     }
 
-    public Product(String sku, String name, Double price, String description, Category category) {
+    public Product(String sku, String name, Double price, String description, Category category, Brand brand) {
         this.sku = sku;
         this.name = name;
         this.price = price;
         this.description = description;
         this.category = category;
+        this.brand = brand;
     }
 
     // Getters and Setters
@@ -104,11 +110,27 @@ public class Product {
         this.category = category;
     }
 
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
     public List<Inventory> getInventories() {
         return inventories;
     }
 
     public void setInventories(List<Inventory> inventories) {
         this.inventories = inventories;
+    }
+
+    public List<ProductReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ProductReview> reviews) {
+        this.reviews = reviews;
     }
 }

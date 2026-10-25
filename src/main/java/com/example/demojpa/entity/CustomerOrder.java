@@ -7,7 +7,10 @@ import java.util.List;
 
 /**
  * Entity: CustomerOrder (Đơn đặt mua hàng của khách)
- * Quan hệ: 1 Đơn hàng có Nhiều chi tiết OrderItem (1 - N)
+ * Quan hệ: 
+ * - Thuộc về 1 Customer (N - 1)
+ * - Có thể áp dụng 1 Promotion (N - 1)
+ * - Có Nhiều chi tiết OrderItem (1 - N)
  */
 @Entity
 @Table(name = "customer_orders")
@@ -35,6 +38,14 @@ public class CustomerOrder {
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate = LocalDateTime.now();
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "promotion_id")
+    private Promotion promotion;
+
     @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -46,6 +57,17 @@ public class CustomerOrder {
         this.phone = phone;
         this.shippingAddress = shippingAddress;
         this.totalAmount = totalAmount;
+        this.status = "PENDING";
+        this.orderDate = LocalDateTime.now();
+    }
+
+    public CustomerOrder(String customerName, String phone, String shippingAddress, Double totalAmount, Customer customer, Promotion promotion) {
+        this.customerName = customerName;
+        this.phone = phone;
+        this.shippingAddress = shippingAddress;
+        this.totalAmount = totalAmount;
+        this.customer = customer;
+        this.promotion = promotion;
         this.status = "PENDING";
         this.orderDate = LocalDateTime.now();
     }
@@ -105,6 +127,22 @@ public class CustomerOrder {
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
     public List<OrderItem> getOrderItems() {
