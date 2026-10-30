@@ -11,7 +11,6 @@ export function MainPanels() {
     <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
       {tab === 'catalog' && <ProductGrid />}
       {tab === 'inventory' && <InventoryMatrix />}
-      {tab === 'orders' && <FastOrder />}
     </div>
   )
 }

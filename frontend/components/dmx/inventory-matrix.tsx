@@ -28,12 +28,12 @@ export function InventoryMatrix() {
         <div className="flex flex-col gap-3 border-b border-border px-4 py-3 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 id="matrix-title" className="text-base font-extrabold text-foreground">
-              Live Multi-Branch Inventory Matrix
+              Bảng Quản Lý Tồn Kho Đa Chi Nhánh Thời Gian Thực
             </h2>
             <p className="text-xs text-muted-foreground">
-              {branch.name} · <span className="tabular">{filteredProducts.length}</span> SKUs ·{' '}
-              <span className="tabular">{totalUnits}</span> units on hand ·{' '}
-              <span className="tabular text-danger-ink">{outCount}</span> out of stock
+              {branch.name} · <span className="tabular">{filteredProducts.length}</span> mẫu sản phẩm ·{' '}
+              <span className="tabular">{totalUnits}</span> máy sẵn sàng ·{' '}
+              <span className="tabular text-danger-ink">{outCount}</span> mã tạm hết hàng
             </p>
           </div>
           <div role="radiogroup" aria-label="Chọn chi nhánh" className="inline-flex rounded-lg border border-border bg-secondary/60 p-1">
@@ -59,14 +59,14 @@ export function InventoryMatrix() {
           <table className="w-full min-w-[960px] text-left text-sm">
             <thead className="bg-secondary/60 whitespace-nowrap text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
               <tr>
-                <th scope="col" className="px-3 py-2.5">SKU</th>
-                <th scope="col" className="px-3 py-2.5">Product Name</th>
-                <th scope="col" className="px-3 py-2.5">Category</th>
-                <th scope="col" className="px-3 py-2.5 text-right">Retail Price</th>
-                <th scope="col" className="px-3 py-2.5 text-right">In Stock</th>
-                <th scope="col" className="px-3 py-2.5 text-right">{other.district}</th>
-                <th scope="col" className="px-3 py-2.5">Real-Time Status</th>
-                <th scope="col" className="px-3 py-2.5">Quick Update · PUT</th>
+                <th scope="col" className="px-3 py-2.5">Mã SKU</th>
+                <th scope="col" className="px-3 py-2.5">Tên sản phẩm</th>
+                <th scope="col" className="px-3 py-2.5">Danh mục</th>
+                <th scope="col" className="px-3 py-2.5 text-right">Giá bán lẻ</th>
+                <th scope="col" className="px-3 py-2.5 text-right">Tồn kho chi nhánh</th>
+                <th scope="col" className="px-3 py-2.5 text-right">ĐMX {other.district}</th>
+                <th scope="col" className="px-3 py-2.5">Trạng thái tồn kho</th>
+                <th scope="col" className="px-3 py-2.5">Cập nhật nhanh · PUT</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -77,7 +77,7 @@ export function InventoryMatrix() {
           </table>
         </div>
         {filteredProducts.length === 0 && (
-          <p className="px-4 py-10 text-center text-sm text-muted-foreground">No SKUs match the current filters.</p>
+          <p className="px-4 py-10 text-center text-sm text-muted-foreground">Không có sản phẩm nào phù hợp với bộ lọc hiện tại.</p>
         )}
       </section>
 
@@ -123,12 +123,12 @@ function InventoryRow({ product, branchId, otherId }: { product: Product; branch
         {qty > 0 ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-success-soft px-2.5 py-1 text-[11px] font-bold whitespace-nowrap text-success-ink">
             <span className="size-1.5 rounded-full bg-success" aria-hidden="true" />
-            Available ({qty})
+            Còn hàng ({qty})
           </span>
         ) : (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-danger-soft px-2.5 py-1 text-[11px] font-bold whitespace-nowrap text-danger-ink">
             <span className="size-1.5 rounded-full bg-danger" aria-hidden="true" />
-            Out of Stock (0)
+            Tạm hết hàng (0)
           </span>
         )}
       </td>
@@ -202,20 +202,20 @@ function ApiLogPanel() {
       <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
         <h2 id="api-log-title" className="flex items-center gap-2 text-sm font-bold text-white">
           <Terminal className="size-4 text-sky-400" aria-hidden="true" />
-          AI Agent Observability
+          Nhật Ký Gọi REST API
         </h2>
         <span className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400">
           <Activity className="size-3.5" aria-hidden="true" />
-          Live
+          Trực tiếp
         </span>
       </div>
       <div className="px-4 py-2 font-mono text-[11px] text-slate-500">
-        spring-boot-3 · inventory-service · mysql:8 (10 tables)
+        spring-boot-3 · inventory-service · mysql:8 (10 bảng)
       </div>
       <ol aria-live="polite" className="flex flex-1 flex-col gap-2 px-4 pb-4 font-mono text-xs">
         {apiLog.length === 0 && (
           <li className="rounded-lg border border-dashed border-slate-800 px-3 py-6 text-center text-slate-500">
-            Waiting for requests… adjust a quantity and press PUT.
+            Đang chờ yêu cầu… Hãy chỉnh sửa số lượng tồn kho rồi bấm nút PUT.
           </li>
         )}
         {apiLog.map((log) => (

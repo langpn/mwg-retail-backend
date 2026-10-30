@@ -10,7 +10,7 @@ export default function Page() {
     <StoreProvider>
       <AppHeader />
       <main className="mx-auto flex max-w-[1440px] flex-col gap-5 px-4 pt-5 md:px-8">
-        <h1 className="sr-only">Điện Máy Xanh — Multi-Branch Retail Dashboard</h1>
+        <h1 className="sr-only">Điện Máy Xanh — Hệ Thống Bán Lẻ Đa Chi Nhánh</h1>
         <FilterRibbon />
         <ViewTabs />
         <MainPanels />

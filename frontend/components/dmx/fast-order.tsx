@@ -111,13 +111,13 @@ function CheckoutForm() {
     <section aria-labelledby="checkout-title" className="flex flex-col rounded-xl border border-border bg-card">
       <div className="border-b border-border px-5 py-4">
         <h2 id="checkout-title" className="text-base font-extrabold text-foreground">
-          Fast Order Checkout
+          Tạo Đơn Hàng Nhanh
         </h2>
-        <p className="text-xs text-muted-foreground">Tạo đơn nhanh tại quầy hoặc giao tận nhà</p>
+        <p className="text-xs text-muted-foreground">Tạo đơn trực tiếp tại quầy siêu thị hoặc giao tận nhà</p>
       </div>
 
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4 p-5">
-        <Field id="order-product" label="Product">
+        <Field id="order-product" label="Sản phẩm chọn mua">
           <div className="flex items-center gap-3 rounded-lg border border-border bg-secondary/40 p-2">
             <img src={product.image || '/placeholder.svg'} alt="" className="size-12 shrink-0 rounded-md bg-card object-contain" />
             <select
@@ -147,7 +147,7 @@ function CheckoutForm() {
         <div className="grid gap-4 sm:grid-cols-[auto_1fr]">
           <div className="flex flex-col gap-1.5">
             <span id="qty-label" className="text-xs font-bold text-foreground">
-              Quantity
+              Số lượng
             </span>
             <div role="group" aria-labelledby="qty-label" className="flex h-10 items-center rounded-lg border border-border">
               <button
@@ -174,7 +174,7 @@ function CheckoutForm() {
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <span className="text-xs font-bold text-foreground">Unit price</span>
+            <span className="text-xs font-bold text-foreground">Đơn giá</span>
             <div className="flex h-10 items-center gap-2">
               <span className="tabular text-lg font-extrabold text-price">{formatVND(product.price)}</span>
               <span className="rounded-md bg-accent/15 px-2 py-0.5 text-[11px] font-bold text-amber-800">Trả góp 0%</span>
@@ -183,7 +183,7 @@ function CheckoutForm() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field id="order-name" label="Customer Name" icon={User} error={errors.name}>
+          <Field id="order-name" label="Họ và tên khách hàng" icon={User} error={errors.name}>
             <input
               id="order-name"
               value={name}
@@ -195,7 +195,7 @@ function CheckoutForm() {
               className={inputClass}
             />
           </Field>
-          <Field id="order-phone" label="Phone number" icon={Phone} error={errors.phone}>
+          <Field id="order-phone" label="Số điện thoại" icon={Phone} error={errors.phone}>
             <input
               id="order-phone"
               type="tel"
@@ -212,12 +212,12 @@ function CheckoutForm() {
         </div>
 
         <fieldset className="flex flex-col gap-2">
-          <legend className="mb-1.5 text-xs font-bold text-foreground">Fulfillment</legend>
+          <legend className="mb-1.5 text-xs font-bold text-foreground">Hình thức nhận hàng</legend>
           <div className="grid grid-cols-2 gap-2">
             {(
               [
-                { id: 'pickup', label: 'Pickup at store', icon: Store },
-                { id: 'delivery', label: 'Home delivery', icon: Truck },
+                { id: 'pickup', label: 'Nhận tại siêu thị', icon: Store },
+                { id: 'delivery', label: 'Giao hàng tận nơi', icon: Truck },
               ] as const
             ).map((f) => (
               <label
@@ -243,7 +243,7 @@ function CheckoutForm() {
         </fieldset>
 
         {fulfillment === 'delivery' && (
-          <Field id="order-address" label="Delivery address" icon={MapPin} error={errors.address}>
+          <Field id="order-address" label="Địa chỉ giao hàng" icon={MapPin} error={errors.address}>
             <input
               id="order-address"
               value={address}
@@ -259,7 +259,7 @@ function CheckoutForm() {
 
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-1.5 text-xs font-bold text-foreground">
-            {fulfillment === 'pickup' ? 'Branch pickup' : 'Ship from branch'}
+            {fulfillment === 'pickup' ? 'Siêu thị nhận hàng' : 'Xuất kho từ siêu thị'}
           </legend>
           <div className="grid gap-2 sm:grid-cols-2">
             {BRANCHES.map((b) => {
@@ -293,7 +293,7 @@ function CheckoutForm() {
                       stock > 0 ? 'bg-success-soft text-success-ink' : 'bg-danger-soft text-danger-ink',
                     )}
                   >
-                    {stock > 0 ? `${stock} in stock` : 'Out of stock'}
+                    {stock > 0 ? `Còn ${stock} máy` : 'Tạm hết hàng'}
                   </span>
                 </label>
               )
@@ -301,7 +301,7 @@ function CheckoutForm() {
           </div>
         </fieldset>
 
-        <Field id="order-promo" label="Promo code" icon={Tag} error={errors.promo}>
+        <Field id="order-promo" label="Mã khuyến mãi" icon={Tag} error={errors.promo}>
           <input
             id="order-promo"
             value={promo}
@@ -314,11 +314,11 @@ function CheckoutForm() {
           />
           <p id="order-promo-hint" aria-live="polite" className="text-[11px] font-semibold">
             {promoDef ? (
-              <span className="text-success-ink">Applied: {promoDef.label}</span>
+              <span className="text-success-ink">Áp dụng thành công: {promoDef.label}</span>
             ) : promoKey ? (
-              <span className="text-muted-foreground">Checking “{promoKey}”…</span>
+              <span className="text-muted-foreground">Đang kiểm tra mã “{promoKey}”…</span>
             ) : (
-              <span className="text-muted-foreground">Try MWG5 (-5%) or TET2027 (-10%, max 1.5M ₫)</span>
+              <span className="text-muted-foreground">Nhập MWG5 (-5%) hoặc TET2027 (-10%, tối đa 1.5 triệu)</span>
             )}
           </p>
         </Field>
@@ -326,18 +326,18 @@ function CheckoutForm() {
         <dl className="flex flex-col gap-1.5 rounded-lg border border-border bg-secondary/40 p-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-muted-foreground">
-              Subtotal (<span className="tabular">{quantity}</span> × item)
+              Tạm tính (<span className="tabular">{quantity}</span> sản phẩm)
             </dt>
             <dd className="tabular font-semibold text-body">{formatVND(subtotal)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-muted-foreground">Discount {promoDef && <span className="font-mono">({promoKey})</span>}</dt>
+            <dt className="text-muted-foreground">Chiết khấu giảm giá {promoDef && <span className="font-mono">({promoKey})</span>}</dt>
             <dd className={cn('tabular font-semibold', discount > 0 ? 'text-success-ink' : 'text-body')}>
               {discount > 0 ? `− ${formatVND(discount)}` : formatVND(0)}
             </dd>
           </div>
           <div className="mt-1 flex items-baseline justify-between border-t border-border pt-2">
-            <dt className="font-bold text-foreground">Total</dt>
+            <dt className="font-bold text-foreground">Tổng thanh toán</dt>
             <dd className="tabular text-2xl font-extrabold text-price">{formatVND(total)}</dd>
           </div>
         </dl>
@@ -350,7 +350,7 @@ function CheckoutForm() {
         {success && (
           <p role="status" className="flex items-center gap-2 rounded-lg bg-success-soft px-3 py-2 text-sm font-semibold text-success-ink">
             <CheckCircle2 className="size-4" aria-hidden="true" />
-            Order #{success.id} created · {formatVND(success.total)}
+            Đơn hàng #{success.id} đặt thành công · Tổng tiền: {formatVND(success.total)}
           </p>
         )}
 
@@ -359,7 +359,7 @@ function CheckoutForm() {
           disabled={available === 0}
           className="h-12 rounded-lg bg-accent text-base font-extrabold text-foreground shadow-sm transition-colors hover:bg-amber-400 focus-visible:ring-4 focus-visible:ring-accent/40 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-secondary disabled:text-muted-foreground"
         >
-          {available === 0 ? 'Out of stock at selected branch' : 'Place Order'}
+          {available === 0 ? 'Tạm hết hàng tại chi nhánh đã chọn' : 'Xác Nhận Đặt Hàng'}
         </button>
       </form>
     </section>
@@ -383,30 +383,36 @@ function OrdersFeed() {
       <div className="flex flex-col gap-3 border-b border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 id="feed-title" className="flex items-center gap-2 text-base font-extrabold text-foreground">
-            Real-Time Orders Queue
+            Hàng Đợi Đơn Hàng Trực Tiếp
             <span className="relative flex size-2">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-60" />
               <span className="relative inline-flex size-2 rounded-full bg-success" />
             </span>
           </h2>
           <p className="text-xs text-muted-foreground">
-            <span className="tabular">{orders.length}</span> orders today · Revenue{' '}
+            <span className="tabular">{orders.length}</span> đơn hàng hôm nay · Doanh thu{' '}
             <span className="tabular font-bold text-body">{formatVND(revenue)}</span>
           </p>
         </div>
         <div className="inline-flex rounded-lg border border-border bg-secondary/60 p-1">
-          {(['ALL', 'PENDING', 'CONFIRMED'] as const).map((f) => (
+          {(
+            [
+              { id: 'ALL', label: 'TẤT CẢ' },
+              { id: 'PENDING', label: 'CHỜ DUYỆT' },
+              { id: 'CONFIRMED', label: 'ĐÃ XÁC NHẬN' },
+            ] as const
+          ).map((f) => (
             <button
-              key={f}
+              key={f.id}
               type="button"
-              aria-pressed={filter === f}
-              onClick={() => setFilter(f)}
+              aria-pressed={filter === f.id}
+              onClick={() => setFilter(f.id)}
               className={cn(
                 'rounded-md px-2.5 py-1 text-[11px] font-bold tracking-wide transition-colors',
-                filter === f ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                filter === f.id ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              {f}
+              {f.label}
             </button>
           ))}
         </div>
@@ -415,7 +421,7 @@ function OrdersFeed() {
       <ol aria-live="polite" className="flex flex-col gap-3 p-5">
         {sorted.length === 0 && (
           <li className="rounded-lg border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
-            No {filter.toLowerCase()} orders.
+            Chưa có đơn hàng nào ở trạng thái này.
           </li>
         )}
         {sorted.map((o) => (
@@ -444,7 +450,7 @@ function OrderCard({ order, onConfirm }: { order: Order; onConfirm: () => void }
               pending ? 'bg-accent/15 text-amber-800' : 'bg-success-soft text-success-ink',
             )}
           >
-            {order.status}
+            {pending ? 'CHỜ XỬ LÝ' : 'ĐÃ XÁC NHẬN'}
           </span>
         </div>
         <span className="tabular flex items-center gap-1 text-xs font-medium text-muted-foreground">
@@ -462,7 +468,7 @@ function OrderCard({ order, onConfirm }: { order: Order; onConfirm: () => void }
           <span className="font-bold text-foreground">{order.customerName}</span>
           <span className="tabular text-muted-foreground">{order.phone}</span>
           <span className="text-muted-foreground">
-            {getBranch(order.branchId).name} · {order.address}
+            {getBranch(order.branchId).name} · {order.address || 'Nhận tại quầy'}
           </span>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -482,7 +488,7 @@ function OrderCard({ order, onConfirm }: { order: Order; onConfirm: () => void }
           className="mt-3 flex h-8 w-full items-center justify-center gap-1.5 rounded-lg border border-primary/30 text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
         >
           <CheckCircle2 className="size-3.5" aria-hidden="true" />
-          Confirm order
+          Xác nhận đơn hàng
         </button>
       )}
     </li>
