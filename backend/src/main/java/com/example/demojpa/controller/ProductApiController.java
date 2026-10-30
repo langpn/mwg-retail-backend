@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * REST Controller: ProductApiController
  * Cung cấp Web Service cho Phân hệ 1 (Sản phẩm & Danh mục)
- * Tuân thủ đầy đủ các phương thức HTTP: GET, POST, DELETE
+ * Tuân thủ đầy đủ các phương thức HTTP: GET, POST, PUT, DELETE
  */
 @RestController
 @RequestMapping("/api/v1/products")
@@ -78,6 +78,17 @@ public class ProductApiController {
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product saved = catalogService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+
+    /**
+     * PUT /api/v1/products/{id}
+     * Cập nhật thông tin sản phẩm theo ID
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        return catalogService.updateProduct(id, product)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**

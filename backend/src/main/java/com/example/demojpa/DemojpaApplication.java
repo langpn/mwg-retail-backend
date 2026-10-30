@@ -29,6 +29,13 @@ public class DemojpaApplication {
 		return args -> {
 			System.out.println("\n========== BAT DAU DEMO JPA ==========\n");
 
+			// Chi chay demo 1 lan duy nhat (tranh loi trung email khi khoi dong lai)
+			if (studentRepository.count() > 0) {
+				System.out.println("--- Du lieu students da ton tai, bo qua demo JPA ---\n");
+				System.out.println("========== KET THUC DEMO JPA ==========\n");
+				return;
+			}
+
 			// ------------------------------------------------
 			// 1. THEM MOI sinh vien (CREATE)
 			// save() -> INSERT INTO students ...

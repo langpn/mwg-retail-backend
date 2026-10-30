@@ -37,7 +37,7 @@ export const api = {
 
   /* ── Health check ── */
   ping: () =>
-    fetch(`${BASE}/products`, { method: 'HEAD', signal: AbortSignal.timeout(3000) })
-      .then(() => true)
+    fetch(`${BASE}/products`, { signal: AbortSignal.timeout(3000) })
+      .then((r) => r.ok)
       .catch(() => false),
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import {
   INITIAL_ORDERS,
   INITIAL_PRODUCTS,
@@ -211,8 +211,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     }
   }, [pushLog])
 
-  // Auto-load on mount
+  // Auto-load on mount (guard against React Strict Mode double-fire)
+  const didLoad = useRef(false)
   useEffect(() => {
+    if (didLoad.current) return
+    didLoad.current = true
     reloadFromBackend()
   }, [reloadFromBackend])
 

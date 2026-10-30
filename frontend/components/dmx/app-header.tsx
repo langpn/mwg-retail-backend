@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { Check, ChevronDown, GraduationCap, MapPin, Search, ShoppingBag, X } from 'lucide-react'
+import { Check, ChevronDown, GraduationCap, LayoutDashboard, MapPin, Search, ShoppingBag, X } from 'lucide-react'
+import Link from 'next/link'
 import { BRANCHES, CATEGORIES, formatVND, getBranch, type CategoryId } from '@/lib/dmx-data'
 import { useStore } from './store-provider'
 import { cn } from '@/lib/utils'
@@ -16,6 +17,7 @@ export function AppHeader() {
         </div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
           <BackendStatusBadge />
+          <DashboardLink />
           <BranchSelector />
           <OrderCounter />
           <AcademicBadge />
@@ -301,6 +303,19 @@ function AcademicBadge() {
   )
 }
 
+
+function DashboardLink() {
+  return (
+    <Link
+      href="/dashboard"
+      className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
+      title="Mở trang quản trị Dashboard"
+    >
+      <LayoutDashboard className="size-3.5" aria-hidden="true" />
+      Dashboard
+    </Link>
+  )
+}
 
 function BackendStatusBadge() {
   const { backendConnected, reloadFromBackend } = useStore()

@@ -85,6 +85,18 @@ public class ProductCatalogService {
         return productRepo.save(product);
     }
 
+    public Optional<Product> updateProduct(Long id, Product updated) {
+        return productRepo.findById(id).map(p -> {
+            p.setName(updated.getName());
+            p.setPrice(updated.getPrice());
+            p.setDescription(updated.getDescription());
+            p.setSku(updated.getSku());
+            if (updated.getCategory() != null) p.setCategory(updated.getCategory());
+            if (updated.getBrand() != null) p.setBrand(updated.getBrand());
+            return productRepo.save(p);
+        });
+    }
+
     public boolean deleteProduct(Long id) {
         if (productRepo.existsById(id)) {
             productRepo.deleteById(id);
