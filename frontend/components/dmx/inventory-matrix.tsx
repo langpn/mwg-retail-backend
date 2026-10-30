@@ -186,6 +186,7 @@ function InventoryRow({ product, branchId, otherId }: { product: Product; branch
 }
 
 const METHOD_STYLES = {
+  GET: 'text-purple-300',
   PUT: 'text-sky-300',
   POST: 'text-emerald-300',
   PATCH: 'text-amber-300',
@@ -224,7 +225,12 @@ function ApiLogPanel() {
                 <span className={cn('font-bold', METHOD_STYLES[log.method])}>{log.method}</span>{' '}
                 <span className="text-slate-300">{log.path}</span>
               </span>
-              <span className="shrink-0 rounded bg-emerald-500/15 px-1.5 text-[10px] font-bold text-emerald-300">
+              <span className={cn(
+                'shrink-0 rounded px-1.5 text-[10px] font-bold',
+                log.status >= 200 && log.status < 300
+                  ? 'bg-emerald-500/15 text-emerald-300'
+                  : 'bg-red-500/15 text-red-300',
+              )}>
                 {log.status}
               </span>
             </div>

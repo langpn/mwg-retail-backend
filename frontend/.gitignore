@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Next.js build & dev cache
+.next/
+out/
+
+# TypeScript cache
+*.tsbuildinfo
+next-env.d.ts
+
+# npm lock (du an dung pnpm lam chuan)
+package-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

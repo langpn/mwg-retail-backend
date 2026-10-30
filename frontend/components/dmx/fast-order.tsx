@@ -81,12 +81,12 @@ function CheckoutForm() {
     return next
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     const v = validate()
     setErrors(v)
     if (Object.keys(v).length > 0) return
-    const result = placeOrder({
+    const result = await placeOrder({
       sku: product.sku,
       quantity,
       customerName: name,

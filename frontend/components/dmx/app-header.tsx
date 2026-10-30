@@ -15,6 +15,7 @@ export function AppHeader() {
           <GlobalSearch />
         </div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <BackendStatusBadge />
           <BranchSelector />
           <OrderCounter />
           <AcademicBadge />
@@ -297,5 +298,31 @@ function AcademicBadge() {
         <span className="text-[11px] font-semibold text-body">Project · Class 21BVL</span>
       </span>
     </div>
+  )
+}
+
+
+function BackendStatusBadge() {
+  const { backendConnected, reloadFromBackend } = useStore()
+  return (
+    <button
+      type="button"
+      onClick={() => reloadFromBackend()}
+      title="Bấm để đồng bộ lại với Spring Boot Backend (Port 8088)"
+      className={cn(
+        'hidden sm:inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors',
+        backendConnected === true
+          ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700'
+          : 'border-amber-500/30 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20',
+      )}
+    >
+      <span
+        className={cn(
+          'size-2 rounded-full',
+          backendConnected === true ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500',
+        )}
+      />
+      {backendConnected === true ? 'API: Live (8088)' : 'API: Offline'}
+    </button>
   )
 }
