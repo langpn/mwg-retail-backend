@@ -55,7 +55,7 @@ export function FilterRibbon() {
 
       <div className="flex flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center lg:gap-6">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="shrink-0 text-[11px] font-bold tracking-wider text-muted-foreground uppercase">Brand</span>
+          <span className="shrink-0 text-[11px] font-bold tracking-wider text-muted-foreground uppercase">Hãng</span>
           <div className="no-scrollbar flex gap-2 overflow-x-auto">
             {BRANDS.map((b) => {
               const active = brands.includes(b.id)
@@ -66,16 +66,13 @@ export function FilterRibbon() {
                   aria-pressed={active}
                   onClick={() => toggleBrand(b.id)}
                   className={cn(
-                    'flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 transition-colors',
+                    'flex shrink-0 items-center rounded-lg border px-3 py-1.5 transition-colors',
                     active
                       ? 'border-foreground bg-foreground text-white'
                       : 'border-border bg-card text-foreground hover:border-foreground/40',
                   )}
                 >
                   <span className="text-sm font-extrabold tracking-tight">{b.id}</span>
-                  <span className={cn('text-[11px] font-medium', active ? 'text-white/70' : 'text-muted-foreground')}>
-                    ({b.origin})
-                  </span>
                 </button>
               )
             })}
@@ -85,7 +82,7 @@ export function FilterRibbon() {
         <div className="hidden h-6 w-px bg-border lg:block" aria-hidden="true" />
 
         <div className="flex min-w-0 items-center gap-3">
-          <span className="shrink-0 text-[11px] font-bold tracking-wider text-muted-foreground uppercase">Budget</span>
+          <span className="shrink-0 text-[11px] font-bold tracking-wider text-muted-foreground uppercase">Mức giá</span>
           <div className="no-scrollbar flex gap-2 overflow-x-auto">
             {BUDGETS.filter((b) => b.id !== 'any').map((b) => {
               const active = budget === b.id
@@ -117,7 +114,7 @@ export function FilterRibbon() {
             className="flex shrink-0 items-center gap-1.5 self-start text-xs font-semibold text-muted-foreground hover:text-primary lg:ml-auto lg:self-auto"
           >
             <RotateCcw className="size-3.5" aria-hidden="true" />
-            Reset filters
+            Đặt lại bộ lọc
           </button>
         )}
       </div>
