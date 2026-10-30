@@ -1,8 +1,21 @@
 'use client'
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { Check, ChevronDown, GraduationCap, LayoutDashboard, MapPin, Search, ShoppingBag, X } from 'lucide-react'
+import {
+  Check,
+  ChevronDown,
+  ClipboardList,
+  LayoutDashboard,
+  LogIn,
+  MapPin,
+  Search,
+  Shield,
+  ShoppingBag,
+  User,
+  X,
+} from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { BRANCHES, CATEGORIES, formatVND, getBranch, type CategoryId } from '@/lib/dmx-data'
 import { useStore } from './store-provider'
 import { cn } from '@/lib/utils'
@@ -10,17 +23,15 @@ import { cn } from '@/lib/utils'
 export function AppHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/85">
-      <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 md:px-8 lg:flex-nowrap">
+      <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3 md:px-8 lg:flex-nowrap">
         <Logo />
         <div className="order-3 w-full lg:order-none lg:flex-1">
           <GlobalSearch />
         </div>
-        <div className="ml-auto flex items-center gap-2 lg:ml-0">
-          <BackendStatusBadge />
-          <DashboardLink />
+        <div className="ml-auto flex items-center gap-2.5 lg:ml-0">
           <BranchSelector />
-          <OrderCounter />
-          <AcademicBadge />
+          <CartButton />
+          <AccountDropdown />
         </div>
       </div>
     </header>
@@ -28,22 +39,32 @@ export function AppHeader() {
 }
 
 function Logo() {
+  const { setCategory, setQuery, setTab } = useStore()
   return (
-    <a href="#" className="flex shrink-0 items-center gap-3" aria-label="Điện Máy Xanh — trang chủ">
+    <Link
+      href="/"
+      onClick={() => {
+        setCategory('all')
+        setQuery('')
+        setTab('catalog')
+      }}
+      className="flex shrink-0 items-center gap-3 transition-opacity hover:opacity-90"
+      aria-label="Điện Máy Xanh — trang chủ"
+    >
       <span className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary-deep shadow-sm ring-1 ring-primary-deep/20">
         <ShoppingBag className="size-5 text-white" strokeWidth={2.25} aria-hidden="true" />
       </span>
       <span className="flex flex-col leading-tight">
-        <span className="text-[17px] font-extrabold tracking-tight text-foreground">
+        <span className="text-[19px] font-extrabold tracking-tight text-foreground">
           Điện Máy <span className="text-primary">Xanh</span>
         </span>
-        <span className="text-[11px] font-medium text-muted-foreground">Multi-Branch Retail System</span>
       </span>
-    </a>
+    </Link>
   )
 }
 
 function GlobalSearch() {
+  const router = useRouter()
   const { products, query, setQuery, setCategory, setTab } = useStore()
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState(query)
@@ -72,6 +93,9 @@ function GlobalSearch() {
     setQuery(value)
     setTab('catalog')
     setOpen(false)
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      router.push('/')
+    }
   }
 
   function pickCategory(id: CategoryId) {
@@ -80,6 +104,9 @@ function GlobalSearch() {
     setDraft('')
     setTab('catalog')
     setOpen(false)
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      router.push('/')
+    }
   }
 
   return (
@@ -115,7 +142,7 @@ function GlobalSearch() {
           onKeyDown={(e) => {
             if (e.key === 'Escape') setOpen(false)
           }}
-          placeholder="Search washers, fridges, smart TVs, SKUs..."
+          placeholder="Tìm kiếm máy giặt, tủ lạnh, tivi, đồ gia dụng..."
           className="h-11 w-full rounded-lg border border-border bg-muted/60 pr-24 pl-10 text-sm font-medium text-body placeholder:text-muted-foreground focus:border-primary focus:bg-card focus:ring-4 focus:ring-primary/15 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
         <div className="absolute top-1/2 right-1.5 flex -translate-y-1/2 items-center gap-1">
@@ -136,7 +163,7 @@ function GlobalSearch() {
             type="submit"
             className="h-8 rounded-md bg-primary px-3 text-xs font-bold text-primary-foreground transition-colors hover:bg-primary-deep"
           >
-            Search
+            Tìm kiếm
           </button>
         </div>
       </form>
@@ -221,7 +248,7 @@ function BranchSelector() {
           <MapPin className="size-3.5" aria-hidden="true" />
         </span>
         <span className="hidden flex-col leading-tight sm:flex">
-          <span className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">Supermarket</span>
+          <span className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">Chi nhánh siêu thị</span>
           <span className="text-xs font-bold whitespace-nowrap text-foreground">
             {branch.name} <span className="font-medium text-muted-foreground">({branch.district})</span>
           </span>
@@ -273,71 +300,104 @@ function BranchSelector() {
   )
 }
 
-function OrderCounter() {
-  const { orders, setTab } = useStore()
-  const pending = orders.filter((o) => o.status === 'PENDING').length
-  return (
-    <button
-      type="button"
-      onClick={() => setTab('orders')}
-      className="relative flex size-10 items-center justify-center rounded-lg border border-border bg-card text-body transition-colors hover:border-primary hover:text-primary"
-      aria-label={`Hàng đợi đơn hàng: ${orders.length} đơn, ${pending} đang chờ`}
-    >
-      <ShoppingBag className="size-[18px]" aria-hidden="true" />
-      <span className="tabular absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-extrabold text-foreground ring-2 ring-card">
-        {orders.length}
-      </span>
-    </button>
-  )
-}
-
-function AcademicBadge() {
-  return (
-    <div className="hidden items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-2.5 py-1.5 xl:flex">
-      <GraduationCap className="size-4 text-amber-700" aria-hidden="true" />
-      <span className="flex flex-col leading-tight">
-        <span className="text-[10px] font-bold tracking-wide text-amber-800 uppercase">IUH Software Engineering</span>
-        <span className="text-[11px] font-semibold text-body">Project · Class 21BVL</span>
-      </span>
-    </div>
-  )
-}
-
-
-function DashboardLink() {
+function CartButton() {
+  const { cartCount } = useStore()
   return (
     <Link
-      href="/dashboard"
-      className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
-      title="Mở trang quản trị Dashboard"
+      href="/cart"
+      className="relative flex size-10 items-center justify-center rounded-full border border-border bg-card text-body transition-colors hover:border-primary hover:text-primary"
+      aria-label={`Giỏ hàng: ${cartCount} sản phẩm`}
+      title="Xem giỏ hàng của bạn"
     >
-      <LayoutDashboard className="size-3.5" aria-hidden="true" />
-      Dashboard
+      <ShoppingBag className="size-[18px]" aria-hidden="true" />
+      {cartCount > 0 && (
+        <span className="tabular absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-extrabold text-foreground ring-2 ring-card shadow-xs">
+          {cartCount}
+        </span>
+      )}
     </Link>
   )
 }
 
-function BackendStatusBadge() {
-  const { backendConnected, reloadFromBackend } = useStore()
+function AccountDropdown() {
+  const { setTab } = useStore()
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [])
+
   return (
-    <button
-      type="button"
-      onClick={() => reloadFromBackend()}
-      title="Bấm để đồng bộ lại với Spring Boot Backend (Port 8088)"
-      className={cn(
-        'hidden sm:inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors',
-        backendConnected === true
-          ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700'
-          : 'border-amber-500/30 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20',
-      )}
-    >
-      <span
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
         className={cn(
-          'size-2 rounded-full',
-          backendConnected === true ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500',
+          'flex h-10 items-center gap-2 rounded-full border px-3 text-xs font-bold transition-all',
+          open
+            ? 'border-primary bg-primary/10 text-primary'
+            : 'border-border bg-card text-foreground hover:border-primary/50 hover:bg-secondary',
         )}
-      />
-      {backendConnected === true ? 'API: Live (8088)' : 'API: Offline'}
-    </button>
+      >
+        <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <User className="size-4" aria-hidden="true" />
+        </span>
+        <span className="hidden sm:inline">Tài khoản</span>
+        <ChevronDown className={cn('size-3.5 text-muted-foreground transition-transform', open && 'rotate-180')} />
+      </button>
+
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 top-[calc(100%+8px)] z-50 w-64 overflow-hidden rounded-xl border border-border bg-card p-2 shadow-xl animate-in fade-in zoom-in-95"
+        >
+          <div className="border-b border-border px-3 py-2.5">
+            <p className="text-xs font-bold text-foreground">Chào mừng quý khách</p>
+            <p className="text-[11px] text-muted-foreground">Thành viên Điện Máy Xanh</p>
+          </div>
+
+          <div className="py-1.5">
+            <Link
+              href="/auth"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+            >
+              <LogIn className="size-4 text-primary" />
+              Đăng nhập / Đăng ký
+            </Link>
+
+            <Link
+              href="/cart"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-secondary"
+            >
+              <ShoppingBag className="size-4 text-muted-foreground" />
+              Giỏ hàng của tôi
+            </Link>
+          </div>
+
+          <div className="border-t border-border pt-1.5">
+            <p className="px-3 py-1 text-[10px] font-bold tracking-wider text-muted-foreground uppercase">
+              Cổng Quản Trị Hệ Thống
+            </p>
+            <Link
+              href="/dashboard"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-amber-800 transition-colors hover:bg-amber-500/10"
+            >
+              <Shield className="size-4 text-amber-600" />
+              Bảng điều khiển Quản trị (Admin)
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }

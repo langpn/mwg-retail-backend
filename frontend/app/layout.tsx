@@ -16,9 +16,9 @@ const jetbrains = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Điện Máy Xanh · Multi-Branch Retail System',
+  title: 'Điện Máy Xanh · Hệ Thống Bán Lẻ Đa Chi Nhánh',
   description:
-    'Omnichannel e-commerce & store operations dashboard for Điện Máy Xanh (MWG): product catalog, real-time multi-branch inventory and fast order queue.',
+    'Hệ thống quản lý dữ liệu và bán lẻ đa chi nhánh Điện Máy Xanh (MWG): quản lý danh mục, tra cứu tồn kho siêu thị thời gian thực và xử lý đơn hàng.',
   generator: 'v0.app',
   icons: {
     icon: [
